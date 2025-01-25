@@ -11,7 +11,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout([$class: 'GitSCM',
-                          branches: [[name: '*/main']],
+                          branches: [[name: '*/TEST1']],
                           userRemoteConfigs: [[url: 'https://github.com/lokx1/jenkins.git']]])
             }
         }
