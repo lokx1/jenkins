@@ -22,6 +22,7 @@ pipeline {
                 }
             }
         }
+
         stage('Compile') {
             steps {
                 script {
@@ -32,6 +33,36 @@ pipeline {
                         /home/baolong/Workspace/workspace/PROC/OBJECTFILE
                     """, returnStdout: true).trim()
                     echo "Output:\n${output}"
+                }
+            }
+        }
+
+        stage('Cleanup and Buffer') {
+            steps {
+                script {
+                    echo 'Moving files to buffer with subdirectories and cleaning up...'
+
+                    // Create the parent BUFFER directory if it doesn't exist
+                    def bufferParentPath = "/home/baolong/Workspace/workspace/PROC/BUFFER"
+                    sh """
+                        mkdir -p ${bufferParentPath}
+                    """
+
+                    // Create a timestamped subdirectory for this pipeline run
+                    def timestamp = new Date().format("yyyyMMddHHmmss")
+                    def bufferSubPath = "${bufferParentPath}/RUN_${timestamp}"
+                    sh """
+                        mkdir -p ${bufferSubPath}
+                    """
+
+                    // Move files to the subdirectory
+                    sh """
+                        mv /home/baolong/Workspace/workspace/PROC/INPUT_CHECKED/* ${bufferSubPath}/
+                        mv /home/baolong/Workspace/workspace/PROC/OBJECTFILE/* ${bufferSubPath}/
+                    """
+
+                    echo "Files moved to buffer: ${bufferSubPath}"
+                    echo "INPUT_CHECKED and OBJECTFILE directories are now empty."
                 }
             }
         }
