@@ -15,7 +15,7 @@ pipeline {
                     $class: 'GitSCM',
                     branches: [[name: '*/main']],
                     userRemoteConfigs: [[
-                        url: 'https://github.com/lokx1/jenkins'
+                        url: 'https://github.com/lokx1/jenkins.git'
                     ]]
                 ])
             }
