@@ -1,30 +1,21 @@
 pipeline {
-    agent {
-        node {
-            label 'LinuxVM'
-        }
-    }
+    agent any
     tools {
-        git 'Default' // Đảm bảo tên Git tool khớp với cấu hình trong Jenkins
+        git 'git' // Use the correct Git tool name
     }
     stages {
         stage('Checkout') {
             steps {
-                echo "Checking out repository..."
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: '*/main']],
-                    userRemoteConfigs: [[
-                        url: 'https://github.com/lokx1/jenkins.git'
-                    ]]
-                ])
+                // Checkout your Git repository
+                checkout([$class: 'GitSCM',
+                          branches: [[name: '*/main']],
+                          userRemoteConfigs: [[url: 'https://github.com/lokx1/jenkins.git']]])
             }
         }
-        stages('test') {
+        stage('Test') {
             steps {
-                echo "Testing..."
-                echo "hello" >> test.txt
-                sh 'mvn test'
+                echo 'Testing Jenkins pipeline with Git'
+                
             }
         }
     }
