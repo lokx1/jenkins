@@ -1,18 +1,23 @@
 pipeline {
     agent {
         node {
-            label 'JenkinsTEST' // Agent có nhãn 'JenkinsTEST'
+            label 'LinuxVM'
         }
     }
-
+    tools {
+        git 'Default' // Đảm bảo tên Git tool khớp với cấu hình trong Jenkins
+    }
     stages {
-        stage('Setup Workspace') {
+        stage('Checkout') {
             steps {
-                echo "Setting up workspace..."
-                sh '''
-                /home/baolong/Workspace/workspace/JenkinsAgentest
-                echo "hello" > file.txt
-                '''
+                echo "Checking out repository..."
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/lokx1/jenkins'
+                    ]]
+                ])
             }
         }
     }
