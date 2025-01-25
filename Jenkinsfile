@@ -5,12 +5,11 @@ pipeline {
         }
     }
     tools {
-        git 'git' // Use the correct Git tool name
+        git 'git' // Ensure this matches the configured Git tool in Jenkins
     }
     stages {
         stage('Checkout') {
             steps {
-                // Checkout your Git repository
                 checkout([$class: 'GitSCM',
                           branches: [[name: '*/main']],
                           userRemoteConfigs: [[url: 'https://github.com/lokx1/jenkins.git']]])
@@ -19,11 +18,16 @@ pipeline {
         stage('Checking Input') {
             steps {
                 script {
-                    echo 'Checking input files for .c extension...'
-                    def output = sh(script: "python3 /home/baolong/Workspace/workspace/JenkinsAgentest/stageInput.py /home/baolong/Workspace/workspace/JenkinsAgentest/INPUT", returnStdout: true).trim()
+                    echo 'Checking input files for .c syntax and moving valid ones...'
+                    def output = sh(script: """
+                        python3 /home/baolong/Workspace/workspace/JenkinsAgentest/check_syntax_and_move.py \
+                        /home/baolong/Workspace/workspace/JenkinsAgentest/INPUT \
+                        /home/baolong/Workspace/workspace/JenkinsAgentest/INPUT_CHECKED
+                    """, returnStdout: true).trim()
                     echo "Output:\n${output}"
                 }
             }
         }
+
     }
 }
