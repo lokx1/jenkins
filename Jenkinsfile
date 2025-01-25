@@ -28,6 +28,19 @@ pipeline {
                 }
             }
         }
+        stage('Compile') {
+            steps {
+                script {
+                    echo 'Compiling .c files...'
+                    def output = sh(script: """
+                        python3 /home/baolong/Workspace/workspace/JenkinsAgentest/stageCompile.py \
+                        /home/baolong/Workspace/workspace/JenkinsAgentest/INPUT_CHECKED \
+                        /home/baolong/Workspace/workspace/JenkinsAgentest/OBJECTFILE
+                    """, returnStdout: true).trim()
+                    echo "Output:\n${output}"
+                }
+            }
+        }
 
     }
 }
