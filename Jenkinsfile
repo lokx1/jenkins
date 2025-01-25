@@ -41,51 +41,6 @@ pipeline {
                 }
             }
         }
-        stage('Push Output') {
-            steps {
-                script {
-                    echo 'Pushing output to a new branch...'
-                    
-                    // Generate a unique branch name using BUILD_NUMBER and timestamp
-                    def branchName = "output-${env.BUILD_NUMBER}-${new Date().format('yyyyMMddHHmmss')}"
 
-                    // Add and commit all output files
-                    sh """
-                        cd /home/baolong/Workspace/workspace/JenkinsAgentest
-                        git checkout -b ${branchName}
-                        git add .
-                        git commit -m "Pipeline output for build #${env.BUILD_NUMBER}"
-                    """
-
-                    // Push the new branch to the public repository
-                    sh """
-                        git push https://github.com/lokx1/jenkins.git ${branchName}
-                    """
-                    
-                    echo "Output pushed to branch '${branchName}'."
-                }
-            }
-        }
-        stage('Cleanup') {
-            steps {
-                script {
-                    echo 'Resetting pipeline state...'
-                    // Clean OBJECTFILE folder
-                    sh """
-                        rm -rf /home/baolong/Workspace/workspace/JenkinsAgentest/OBJECTFILE/*
-                    """
-                    echo 'OBJECTFILE folder is now empty.'
-
-                    // Clean INPUT_CHECKED folder
-                    sh """
-                        rm -rf /home/baolong/Workspace/workspace/JenkinsAgentest/INPUT_CHECKED/*
-                    """
-                    echo 'INPUT_CHECKED folder is now empty.'
-
-                    // Leave INPUT folder unchanged
-                    echo 'INPUT folder remains unchanged.'
-                }
-            }
-        }
     }
 }
