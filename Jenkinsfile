@@ -20,5 +20,12 @@ pipeline {
                 ])
             }
         }
+        stages('test') {
+            steps {
+                echo "Testing..."
+                echo "hello" >> test.txt
+                sh 'mvn test'
+            }
+        }
     }
 }
