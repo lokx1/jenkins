@@ -1,5 +1,12 @@
 pipeline {
-    agent any
+    agent {
+
+       node {
+            label 'LinuxVM'
+        }
+
+
+    }
     tools {
         git 'git' // Use the correct Git tool name
     }
@@ -18,7 +25,7 @@ pipeline {
                 script{
                         def Output = bat(script:"/home/baolong/Workspace/workspace/JenkinsAgentest/helloworld.py",returnStdout:true).trim()
                         echo "Output is: ${Output}"
-                        
+
                 }
             }
         }
