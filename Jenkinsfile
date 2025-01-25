@@ -15,7 +15,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing Jenkins pipeline with Git'
-                
+                echo "Testing Jenkins pipeline with Git" > test.txt
             }
         }
     }
