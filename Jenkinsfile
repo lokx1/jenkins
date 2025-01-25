@@ -1,11 +1,8 @@
 pipeline {
     agent {
-
-       node {
+        node {
             label 'LinuxVM'
         }
-
-
     }
     tools {
         git 'git' // Use the correct Git tool name
@@ -22,10 +19,10 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing Jenkins pipeline with Git'
-                script{
-                        def Output = bat(script:"/home/baolong/Workspace/workspace/JenkinsAgentest/helloworld.py",returnStdout:true).trim()
-                        echo "Output is: ${Output}"
-
+                script {
+                    // Use sh instead of bat for Linux
+                    def output = sh(script: "python3 /home/baolong/Workspace/workspace/JenkinsAgentest/helloworld.py", returnStdout: true).trim()
+                    echo "Output is: ${output}"
                 }
             }
         }
