@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     echo 'Checking input files for .c extension...'
-                    def output = sh(script: "python3 /home/baolong/Workspace/workspace/JenkinsAgentest/check_input.py /home/baolong/Workspace/workspace/JenkinsAgentest/INPUT", returnStdout: true).trim()
+                    def output = sh(script: "python3 /home/baolong/Workspace/workspace/JenkinsAgentest/stageInput.py /home/baolong/Workspace/workspace/JenkinsAgentest/INPUT", returnStdout: true).trim()
                     echo "Output:\n${output}"
                 }
             }
