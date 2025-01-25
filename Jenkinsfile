@@ -1,37 +1,19 @@
 pipeline {
-    agent { 
+    agent {
         node {
-            label 'JenkinsTEST'
-            }
-      }
+            label 'JenkinsTEST' // Agent có nhãn 'JenkinsTEST'
+        }
+    }
     triggers {
-        pollSCM '* * * * *'
+        pollSCM('* * * * *') // Kiểm tra source code mỗi phút
     }
     stages {
-        stage('Build') {
+        stage('Setup Workspace') {
             steps {
-                echo "Building.."
+                echo "Setting up workspace..."
                 sh '''
-                cd myapp
-                pip install -r requirements.txt
-                '''
-            }
-        }
-        stage('Test') {
-            steps {
-                echo "Testing.."
-                sh '''
-                cd myapp
-                python3 hello.py
-                python3 hello.py --name=Brad
-                '''
-            }
-        }
-        stage('Deliver') {
-            steps {
-                echo 'Deliver....'
-                sh '''
-                echo "doing delivery stuff.."
+                cd /home/baolong/Jenkins Testing/workspace/JenkinsAgentest
+                echo "hello" > file.txt
                 '''
             }
         }
