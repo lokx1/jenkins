@@ -10,7 +10,7 @@ pipeline {
             steps {
                 echo "Setting up workspace..."
                 sh '''
-                cd /home/baolong/Jenkins Testing/workspace/JenkinsAgentest
+                /home/baolong/Workspace/workspace/JenkinsAgentest
                 echo "hello" > file.txt
                 '''
             }
