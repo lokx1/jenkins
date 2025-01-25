@@ -14,9 +14,9 @@ pipeline {
                 script {
                     echo 'Checking input files for .c syntax and moving valid ones...'
                     def output = sh(script: """
-                        python3 /home/baolong/Workspace/workspace/JenkinsAgentest/stageInput.py \
-                        /home/baolong/Workspace/workspace/JenkinsAgentest/INPUT \
-                        /home/baolong/Workspace/workspace/JenkinsAgentest/INPUT_CHECKED
+                        python3 /home/baolong/Workspace/workspace/PROC/stageInput.py \
+                        /home/baolong/Workspace/workspace/PROC/INPUT \
+                        /home/baolong/Workspace/workspace/PROC/INPUT_CHECKED
                     """, returnStdout: true).trim()
                     echo "Output:\n${output}"
                 }
@@ -27,9 +27,9 @@ pipeline {
                 script {
                     echo 'Compiling .c files...'
                     def output = sh(script: """
-                        python3 /home/baolong/Workspace/workspace/JenkinsAgentest/stageCompile.py \
-                        /home/baolong/Workspace/workspace/JenkinsAgentest/INPUT_CHECKED \
-                        /home/baolong/Workspace/workspace/JenkinsAgentest/OBJECTFILE
+                        python3 /home/baolong/Workspace/workspace/PROC/stageCompile.py \
+                        /home/baolong/Workspace/workspace/PROC/INPUT_CHECKED \
+                        /home/baolong/Workspace/workspace/PROC/OBJECTFILE
                     """, returnStdout: true).trim()
                     echo "Output:\n${output}"
                 }
