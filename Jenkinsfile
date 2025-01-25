@@ -4,9 +4,7 @@ pipeline {
             label 'JenkinsTEST' // Agent có nhãn 'JenkinsTEST'
         }
     }
-    triggers {
-        pollSCM('* * * * *') // Kiểm tra source code mỗi phút
-    }
+
     stages {
         stage('Setup Workspace') {
             steps {
