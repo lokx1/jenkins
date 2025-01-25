@@ -8,13 +8,7 @@ pipeline {
         git 'git' // Ensure this matches the configured Git tool in Jenkins
     }
     stages {
-        stage('Checkout') {
-            steps {
-                checkout([$class: 'GitSCM',
-                          branches: [[name: '*/TEST1']],
-                          userRemoteConfigs: [[url: 'https://github.com/lokx1/jenkins.git']]])
-            }
-        }
+
         stage('Checking Input') {
             steps {
                 script {
