@@ -15,7 +15,11 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing Jenkins pipeline with Git'
-                echo "Testing Jenkins pipeline with Git" > test.txt
+                script{
+                        def Output = bat(script:"/home/baolong/Workspace/workspace/JenkinsAgentest/helloworld.py",returnStdout:true).trim()
+                        echo "Output is: ${Output}"
+                        
+                }
             }
         }
     }
