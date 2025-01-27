@@ -65,7 +65,7 @@ pipeline {
             echo "INPUT_CHECKED and OBJECTFILE directories are now empty."
 
             // Use withCredentials for Git operations
-        withCredentials([sshUserPrivateKey(credentialsId: 'git-pat', keyFileVariable: 'SSH_KEY')]) {
+        withCredentials([sshUserPrivateKey(credentialsId: 'git', keyFileVariable: 'SSH_KEY')]) {
           sh """
         export GIT_SSH_COMMAND='ssh -i $SSH_KEY'
         git add .
