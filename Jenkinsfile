@@ -65,27 +65,14 @@ pipeline {
             echo "INPUT_CHECKED and OBJECTFILE directories are now empty."
 
             // Use withCredentials for Git operations
-withCredentials([usernamePassword(credentialsId: 'github-pat', usernameVariable: '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', passwordVariable: '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')]) {
-    sh """
-        # Configure Git remote with HTTPS URL including credentials
-        git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/lokx1/jenkins.git
-
-        # Ensure we are on the main branch
-        if ! git rev-parse --verify main >/dev/null 2>&1; then
-            echo "Main branch does not exist. Creating it..."
-            git checkout -b main
-        else
-            echo "Switching to main branch..."
-            git checkout main
-        fi
-
-        # Stage changes, commit, and push
+        withCredentials([sshUserPrivateKey(credentialsId: 'git-pat', keyFileVariable: 'SSH_KEY')]) {
+          sh """
+        export GIT_SSH_COMMAND='ssh -i $SSH_KEY'
         git add .
-        git commit -m "Automated commit from Jenkins pipeline: $(date +%Y%m%d%H%M%S)" || echo "No changes to commit"
-        git push origin main || echo "Push failed, please check credentials"
-    """
-}
-
+        git commit -m 'Automated commit from Jenkins pipeline: ${timestamp}' 
+        git push || echo 'Push failed, please check credentials'
+             """
+        }
 
             // Delete the files in the timestamped subdirectory after ensuring they are backed up
             sh """
