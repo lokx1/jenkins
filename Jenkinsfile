@@ -70,7 +70,7 @@ pipeline {
                 sh """
                     git add .
                     git commit -m "Automated commit from Jenkins pipeline: ${timestamp}"
-                    git push origin main
+                    git push 
                 """
             }
 
