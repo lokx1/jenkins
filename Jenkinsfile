@@ -80,10 +80,8 @@ pipeline {
                     git checkout main
                 fi
 
-
-                #pull the latest changes 
-                git pull origin main
-
+                # Pull the latest changes from the remote repository with rebase
+                git pull --rebase origin main
 
                 # Stage, commit, and push changes
                 git add .
