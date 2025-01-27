@@ -68,7 +68,7 @@ pipeline {
 withCredentials([usernamePassword(credentialsId: 'github-pat', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
     sh """
         # Configure Git remote with HTTPS URL including credentials
-        git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/lokx1/jenkins.git
+        git remote set-url origin https://${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}:${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}@github.com/lokx1/jenkins.git
 
         # Ensure we are on the main branch
         if ! git rev-parse --verify main >/dev/null 2>&1; then
