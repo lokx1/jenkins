@@ -68,10 +68,9 @@ pipeline {
         withCredentials([sshUserPrivateKey(credentialsId: 'git', keyFileVariable: 'SSH_KEY')]) {
           sh """
         export GIT_SSH_COMMAND='ssh -i $SSH_KEY'
-        git checkout main
         git add .
-        git commit -m 'Automated commit from Jenkins pipeline: ${timestamp}' || echo 'No changes to commit'
-        git push origin main || echo 'Push failed, please check credentials'
+        git commit -m 'Automated commit from Jenkins pipeline: ${timestamp}' 
+        git push || echo 'Push failed, please check credentials'
              """
         }
 
