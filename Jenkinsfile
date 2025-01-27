@@ -33,28 +33,14 @@ pipeline {
                         /home/baolong/Workspace/workspace/PROC/OBJECTFILE
                     """, returnStdout: true).trim()
                     echo "Output:\n${output}"
-                   stage('Compile') {
-    steps {
-        script {
-            echo 'Compiling .c files...'
-            def output = sh(script: """
-                python3 /home/baolong/Workspace/workspace/PROC/stageCompile.py \
-                /home/baolong/Workspace/workspace/PROC/INPUT_CHECKED \
-                /home/baolong/Workspace/workspace/PROC/OBJECTFILE
-            """, returnStdout: true).trim()
-            echo "Output:\n${output}"
-            
-
-        }
-    }
-}
+                   
                 }
             }
         }
 
-        stage('Cleanup and Buffer') {
-            steps {
-                        script {
+      stage('Cleanup and Buffer') {
+    steps {
+        script {
             echo 'Moving files to buffer with subdirectories and cleaning up...'
 
             // Create the parent BUFFER directory if it doesn't exist
@@ -93,8 +79,8 @@ pipeline {
                 rm -rf ${bufferSubPath}/*
             """
         }
-            }
-        }
+    }
+}
 
     }
 }
