@@ -65,14 +65,15 @@ pipeline {
             echo "INPUT_CHECKED and OBJECTFILE directories are now empty."
 
             // Use withCredentials for Git operations
-            withCredentials([sshUserPrivateKey(credentialsId: 'git', keyFileVariable: 'SSH_KEY')]) {
-            sh """
-                 export GIT_SSH_COMMAND="ssh -i $SSH_KEY"
-                    git commit -m "Automated commit from Jenkins pipeline" || echo "No changes to commit"
-                    git push || echo "Push failed, please check credentials"
-            """
-            }
-
+        withCredentials([sshUserPrivateKey(credentialsId: 'git', keyFileVariable: 'SSH_KEY')]) {
+          sh """
+        export GIT_SSH_COMMAND='ssh -i $SSH_KEY'
+        git checkout main
+        git add .
+        git commit -m 'Automated commit from Jenkins pipeline: ${timestamp}' || echo 'No changes to commit'
+        git push origin main || echo 'Push failed, please check credentials'
+             """
+        }
 
             // Delete the files in the timestamped subdirectory after ensuring they are backed up
             sh """
