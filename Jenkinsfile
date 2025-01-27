@@ -80,6 +80,11 @@ pipeline {
                     git checkout main
                 fi
 
+
+                #pull the latest changes 
+                git pull origin main
+
+                
                 # Stage, commit, and push changes
                 git add .
                 git commit -m "Automated commit from Jenkins pipeline: $(date +%Y%m%d%H%M%S)" || echo "No changes to commit"
