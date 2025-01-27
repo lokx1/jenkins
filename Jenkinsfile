@@ -37,8 +37,7 @@ pipeline {
                 }
             }
         }
-
-      stage('Cleanup and Buffer') {
+        stage('Cleanup and Buffer') {
     steps {
         script {
             echo 'Moving files to buffer with subdirectories and cleaning up...'
@@ -65,22 +64,28 @@ pipeline {
             echo "Files moved to buffer: ${bufferSubPath}"
             echo "INPUT_CHECKED and OBJECTFILE directories are now empty."
 
-            // Navigate to the BUFFER directory and push to git
-            dir(bufferParentPath) {
-                sh """
-                    git add .
-                    git commit -m "Automated commit from Jenkins pipeline: ${timestamp}"
-                    git push 
-                """
+            // Use withCredentials for Git operations
+            withCredentials([sshUserPrivateKey(credentialsId: 'git', keyFileVariable: 'SSH_KEY')]) {
+            sh """
+                git remote set-url origin git@github.com:lokx1/jenkins-logs
+                git add .
+                git commit -m "Automated commit from Jenkins pipeline"
+                GIT_SSH_COMMAND="ssh -i $SSH_KEY" git push
+            """
             }
 
-            // Delete the files in the timestamped subdirectory
+
+            // Delete the files in the timestamped subdirectory after ensuring they are backed up
             sh """
                 rm -rf ${bufferSubPath}/*
             """
+
+            echo "Cleanup complete, buffer subdirectory cleared: ${bufferSubPath}"
         }
     }
 }
+
+     
 
     }
 }
