@@ -65,30 +65,32 @@ pipeline {
             echo "INPUT_CHECKED and OBJECTFILE directories are now empty."
 
             // Use withCredentials for Git operations
-        withCredentials([sshUserPrivateKey(credentialsId: 'git', keyFileVariable: 'SSH_KEY')]) {
-            sh '''
-                export GIT_SSH_COMMAND="ssh -i $SSH_KEY"
-                git remote set-url origin git@github.com:lokx1/jenkins-logs.git
+    withCredentials([sshUserPrivateKey(credentialsId: 'git', keyFileVariable: 'SSH_KEY')]) {
+                dir(bufferParentPath) {
+                    sh '''
+                        export GIT_SSH_COMMAND="ssh -i $SSH_KEY"
+                        git remote set-url origin git@github.com:lokx1/jenkins-logs.git
 
-                # Ensure we are on a valid branch
-                if ! git rev-parse --verify main >/dev/null 2>&1; then
-                    echo "Main branch does not exist. Creating it..."
-                    git checkout -b main
-                    git push --set-upstream origin main
-                else
-                    echo "Switching to main branch..."
-                    git checkout main
-                fi
+                        # Ensure we are on a valid branch
+                        if ! git rev-parse --verify main >/dev/null 2>&1; then
+                            echo "Main branch does not exist. Creating it..."
+                            git checkout -b main
+                            git push --set-upstream origin main
+                        else
+                            echo "Switching to main branch..."
+                            git checkout main
+                        fi
 
-                # Pull the latest changes from the remote repository with rebase
-                git pull --rebase origin main
+                        # Pull the latest changes from the remote repository with rebase
+                        git pull --rebase origin main
 
-                # Stage, commit, and push changes
-                git add .
-                git commit -m "Automated commit from Jenkins pipeline: $(date +%Y%m%d%H%M%S)" || echo "No changes to commit"
-                git push origin main || echo "Push failed, please check credentials"
-            '''
-        }
+                        # Stage, commit, and push changes
+                        git add .
+                        git commit -m "Automated commit from Jenkins pipeline: $(date +%Y%m%d%H%M%S)" || echo "No changes to commit"
+                        git push origin main || echo "Push failed, please check credentials"
+                    '''
+                }
+            }
 
 
             // Delete the files in the timestamped subdirectory after ensuring they are backed up
