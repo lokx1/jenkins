@@ -33,6 +33,21 @@ pipeline {
                         /home/baolong/Workspace/workspace/PROC/OBJECTFILE
                     """, returnStdout: true).trim()
                     echo "Output:\n${output}"
+                   stage('Compile') {
+    steps {
+        script {
+            echo 'Compiling .c files...'
+            def output = sh(script: """
+                python3 /home/baolong/Workspace/workspace/PROC/stageCompile.py \
+                /home/baolong/Workspace/workspace/PROC/INPUT_CHECKED \
+                /home/baolong/Workspace/workspace/PROC/OBJECTFILE
+            """, returnStdout: true).trim()
+            echo "Output:\n${output}"
+            
+
+        }
+    }
+}
                 }
             }
         }
@@ -60,12 +75,26 @@ pipeline {
                         mv /home/baolong/Workspace/workspace/PROC/INPUT_CHECKED/* ${bufferSubPath}/
                         mv /home/baolong/Workspace/workspace/PROC/OBJECTFILE/* ${bufferSubPath}/
                     """
-
+                    
                     echo "Files moved to buffer: ${bufferSubPath}"
                     echo "INPUT_CHECKED and OBJECTFILE directories are now empty."
+
+                    // Navigate to the BUFFER directory and push to git
+                    dir(bufferParentPath) {
+                        sh """
+                            git add .
+                            git commit -m "Automated commit from Jenkins pipeline: ${timestamp}"
+                            git push origin main
+                        """
+                    }
+
+                    // Delete the files in the timestamped subdirectory
+                    sh """
+                        rm -rf ${bufferSubPath}/*
+                    """
                 }
-            }
-        }
+    }
+}
 
     }
 }
