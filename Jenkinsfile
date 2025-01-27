@@ -67,10 +67,11 @@ pipeline {
             // Use withCredentials for Git operations
             withCredentials([sshUserPrivateKey(credentialsId: 'git', keyFileVariable: 'SSH_KEY')]) {
             sh """
-                git remote set-url origin git@github.com:lokx1/jenkins-logs
-                git add .
-                git commit -m "Automated commit from Jenkins pipeline"
-                GIT_SSH_COMMAND="ssh -i $SSH_KEY" git push
+                 export GIT_SSH_COMMAND="ssh -i $SSH_KEY"
+                    git remote set-url origin git@github.com:lokx1/jenkins-logs.git
+                    git add .
+                    git commit -m "Automated commit from Jenkins pipeline" || echo "No changes to commit"
+                    git push || echo "Push failed, please check credentials"
             """
             }
 
