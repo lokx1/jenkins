@@ -59,7 +59,7 @@ pipeline {
             sh """
                 mv /home/baolong/Workspace/workspace/PROC/INPUT_CHECKED/* ${bufferSubPath}/
                 mv /home/baolong/Workspace/workspace/PROC/OBJECTFILE/* ${bufferSubPath}/
-                mv /home/baolong/Workspace/workspace/PROC/INPUT/Overall.txt ${bufferSubPath}/
+                mv /home/baolong/Workspace/workspace/PROC/INPUT/InputLogs.txt ${bufferSubPath}/
             """
             
             echo "Files moved to buffer: ${bufferSubPath}"
