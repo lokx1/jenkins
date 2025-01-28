@@ -11,7 +11,7 @@ pipeline {
 
         stage('Checking Input') {
             steps {
-                script {
+                script {580
                     echo 'Checking input files for .c syntax and moving valid ones...'
                     def output = sh(script: """
                         python3 /home/baolong/Workspace/workspace/PROC/stageInput.py \
@@ -67,28 +67,32 @@ pipeline {
             // Use withCredentials for Git operations
     withCredentials([sshUserPrivateKey(credentialsId: 'git', keyFileVariable: 'SSH_KEY')]) {
                 dir(bufferParentPath) {
-                    sh '''
-                        export GIT_SSH_COMMAND="ssh -i $SSH_KEY"
-                        git remote set-url origin git@github.com:lokx1/jenkins-logs.git
+                sh '''
+                    export GIT_SSH_COMMAND="ssh -i $SSH_KEY"
+                    git remote set-url origin git@github.com:lokx1/jenkins-logs.git
 
-                        # Ensure we are on a valid branch
-                        if ! git rev-parse --verify main >/dev/null 2>&1; then
-                            echo "Main branch does not exist. Creating it..."
-                            git checkout -b main
-                            git push --set-upstream origin main
-                        else
-                            echo "Switching to main branch..."
-                            git checkout main
-                        fi
+                    # Ensure we are on a valid branch
+                    if ! git rev-parse --verify main >/dev/null 2>&1; then
+                        echo "Main branch does not exist. Creating it..."
+                        git checkout -b main
+                        git push --set-upstream origin main
+                    else
+                        echo "Switching to main branch..."
+                        git checkout main
+                    fi
 
-                        # Pull the latest changes from the remote repository with rebase
-                        git pull --rebase origin main
+                    # Stage all changes
+                    git add .
 
-                        # Stage, commit, and push changes
-                        git add .
-                        git commit -m "Automated commit from Jenkins pipeline: $(date +%Y%m%d%H%M%S)" || echo "No changes to commit"
-                        git push origin main || echo "Push failed, please check credentials"
-                    '''
+                    # Commit changes if there are any
+                    git commit -m "Automated commit from Jenkins pipeline: $(date +%Y%m%d%H%M%S)" || echo "No changes to commit"
+
+                    # Pull the latest changes from the remote repository with rebase
+                    git pull --rebase origin main || echo "Pull failed, please check for conflicts"
+
+                    # Push changes to the remote repository
+                    git push origin main || echo "Push failed, please check credentials"
+                '''
                 }
             }
 
