@@ -11,7 +11,7 @@ pipeline {
 
         stage('Checking Input') {
             steps {
-                script {580
+                script {
                     echo 'Checking input files for .c syntax and moving valid ones...'
                     def output = sh(script: """
                         python3 /home/baolong/Workspace/workspace/PROC/stageInput.py \
@@ -37,9 +37,22 @@ pipeline {
                 }
             }
         }
+        stage('AI Generating Testcase') {
+            steps {
+                script {
+                    echo 'Generating test cases using AI...'
+                    def output = sh(script: """
+                        python3 /home/baolong/Workspace/workspace/PROC/AiGen.py \
+                        /home/baolong/Workspace/workspace/PROC/INPUT_CHECKED \
+                        /home/baolong/Workspace/workspace/PROC/TESTCASE
+                    """, returnStdout: true).trim()
+                    echo "Output:\n${output}"
+                }
+            }
+        }
         stage('Cleanup and Buffer') {
-    steps {
-        script {
+         steps {
+         script {
             echo 'Moving files to buffer with subdirectories and cleaning up...'
 
             // Create the parent BUFFER directory if it doesn't exist
