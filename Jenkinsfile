@@ -8,7 +8,7 @@ pipeline {
         git 'git' // Ensure this matches the configured Git tool in Jenkins
     }
     stages {
-//
+
         stage('Checking Input') {
             steps {
                 script {
@@ -72,16 +72,15 @@ pipeline {
 
                     // Move files to the subdirectory
                     sh """
-                        mv -f /home/baolong/Workspace/workspace/PROC/INPUT_CHECKED/* ${bufferSubPath}/
-                        mv -f /home/baolong/Workspace/workspace/PROC/OBJECTFILE/* ${bufferSubPath}/
-                        mv -f /home/baolong/Workspace/workspace/PROC/INPUT/InputLogs.txt ${bufferSubPath}/
-                        mv -f /home/baolong/Workspace/workspace/PROC/INPUT/Overall.txt ${bufferSubPath}/
+                        mv /home/baolong/Workspace/workspace/PROC/INPUT_CHECKED/* ${bufferSubPath}/
+                        mv /home/baolong/Workspace/workspace/PROC/OBJECTFILE/* ${bufferSubPath}/
+                        mv /home/baolong/Workspace/workspace/PROC/INPUT/InputLogs.txt ${bufferSubPath}/
                         mkdir -p ${bufferSubPath}/TESTCASE
-                        mv -f /home/baolong/Workspace/workspace/PROC/TESTCASE/*.c ${bufferSubPath}/TESTCASE/
+                        mv /home/baolong/Workspace/workspace/PROC/TESTCASE/*.c ${bufferSubPath}/TESTCASE/
                     """
                     
                     echo "Files moved to buffer: ${bufferSubPath}"
-                    echo "INPUT_CHECKED, OBJECTFILE directories, and Overall.txt are now empty."
+                    echo "INPUT_CHECKED, OBJECTFILE directories are now empty."
 
                     // Use withCredentials for Git operations
                     withCredentials([sshUserPrivateKey(credentialsId: 'git', keyFileVariable: 'SSH_KEY')]) {
