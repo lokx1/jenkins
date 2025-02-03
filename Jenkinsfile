@@ -100,6 +100,8 @@ pipeline {
                                 if ! git rev-parse --verify main >/dev/null 2>&1; then
                                     echo "Main branch does not exist. Creating it..."
                                     git checkout -b main
+                                    # Make an initial commit
+                                    git commit --allow-empty -m "Initial commit"
                                     git push --set-upstream origin main
                                 else
                                     echo "Switching to main branch..."
