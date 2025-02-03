@@ -88,7 +88,6 @@ pipeline {
                         dir(bufferParentPath) {
                             sh '''
                                 export GIT_SSH_COMMAND="ssh -i $SSH_KEY"
-                                
                                 # Check if the remote 'origin' exists
                                 if ! git remote | grep -q 'origin'; then
                                     git remote add origin git@github.com:lokx1/jenkins-logs.git
@@ -105,9 +104,6 @@ pipeline {
                                     echo "Switching to main branch..."
                                     git checkout main
                                 fi
-
-                                # Stage all changes
-                                git add .
 
                                 # Stage all changes
                                 git add .
