@@ -14,9 +14,9 @@ pipeline {
                 script {
                     echo 'Checking input files for .c syntax and moving valid ones...'
                     def output = sh(script: """
-                        python3 /home/baolong/Workspace/workspace/PROC/stageInput.py \
-                        /home/baolong/Workspace/workspace/PROC/INPUT \
-                        /home/baolong/Workspace/workspace/PROC/INPUT_CHECKED
+                        python3 /home/agent1/Workspace/workspace/Jenkins/stageInput.py \
+                        /home/agent1/Workspace/workspace/Jenkins/INPUT \
+                        /home/agent1/Workspace/workspace/Jenkins/INPUT_CHECKED
                     """, returnStdout: true).trim()
                     echo "Output:\n${output}"
                 }
@@ -28,9 +28,9 @@ pipeline {
                 script {
                     echo 'Compiling .c files...'
                     def output = sh(script: """
-                        python3 /home/baolong/Workspace/workspace/PROC/stageCompile.py \
-                        /home/baolong/Workspace/workspace/PROC/INPUT_CHECKED \
-                        /home/baolong/Workspace/workspace/PROC/OBJECTFILE
+                        python3 /home/agent1/Workspace/workspace/Jenkins/stageCompile.py \
+                        /home/agent1/Workspace/workspace/Jenkins/INPUT_CHECKED \
+                        /home/agent1/Workspace/workspace/Jenkins/OBJECTFILE
                     """, returnStdout: true).trim()
                     echo "Output:\n${output}"
                    
@@ -43,9 +43,9 @@ pipeline {
                 script {
                     echo 'Generating test cases using AI...'
                     def output = sh(script: """
-                        python3 /home/baolong/Workspace/workspace/PROC/AiGen.py \
-                        /home/baolong/Workspace/workspace/PROC/INPUT_CHECKED \
-                        /home/baolong/Workspace/workspace/PROC/TESTCASE
+                        python3 /home/agent1/Workspace/workspace/Jenkins/AiGen.py \
+                        /home/agent1/Workspace/workspace/Jenkins/INPUT_CHECKED \
+                        /home/agent1/Workspace/workspace/Jenkins/TESTCASE
                     """, returnStdout: true).trim()
                     echo "Output:\n${output}"
                 }
@@ -58,7 +58,7 @@ pipeline {
                     echo 'Moving files to buffer with subdirectories and cleaning up...'
 
                     // Create the parent BUFFER directory if it doesn't exist
-                    def bufferParentPath = "/home/baolong/Workspace/workspace/PROC/BUFFER"
+                    def bufferParentPath = "/home/agent1/Workspace/workspace/Jenkins/BUFFER"
                     sh """
                         mkdir -p ${bufferParentPath}
                     """
@@ -72,11 +72,11 @@ pipeline {
 
                     // Move files to the subdirectory
                     sh """
-                        mv /home/baolong/Workspace/workspace/PROC/INPUT_CHECKED/* ${bufferSubPath}/
-                        mv /home/baolong/Workspace/workspace/PROC/OBJECTFILE/* ${bufferSubPath}/
-                        mv /home/baolong/Workspace/workspace/PROC/INPUT/InputLogs.txt ${bufferSubPath}/
+                        mv /home/agent1/Workspace/workspace/Jenkins/INPUT_CHECKED/* ${bufferSubPath}/
+                        mv /home/agent1/Workspace/workspace/Jenkins/OBJECTFILE/* ${bufferSubPath}/
+                        mv /home/agent1/Workspace/workspace/Jenkins/INPUT/InputLogs.txt ${bufferSubPath}/
                         mkdir -p ${bufferSubPath}/TESTCASE
-                        mv /home/baolong/Workspace/workspace/PROC/TESTCASE/*.c ${bufferSubPath}/TESTCASE/
+                        mv /home/agent1/Workspace/workspace/Jenkins/TESTCASE/*.c ${bufferSubPath}/TESTCASE/
                     """
                     
                     echo "Files moved to buffer: ${bufferSubPath}"
@@ -116,8 +116,8 @@ pipeline {
 
                     // Delete the files in INPUT_CHECKED and OBJECTFILE directories
                     sh """
-                        rm -rf /home/baolong/Workspace/workspace/PROC/INPUT_CHECKED/*
-                        rm -rf /home/baolong/Workspace/workspace/PROC/OBJECTFILE/*
+                        rm -rf /home/agent1/Workspace/workspace/Jenkins/INPUT_CHECKED/*
+                        rm -rf /home/agent1/Workspace/workspace/Jenkins/OBJECTFILE/*
                     """
 
                     echo "Cleanup complete, INPUT_CHECKED and OBJECTFILE directories cleared."
