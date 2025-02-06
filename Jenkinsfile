@@ -77,7 +77,6 @@ pipeline {
                         mv /home/agent1/Workspace/workspace/Jenkins/INPUT/InputLogs.txt ${bufferSubPath}/
                         mkdir -p ${bufferSubPath}/TESTCASE
                         mv /home/agent1/Workspace/workspace/Jenkins/TESTCASE/*.c ${bufferSubPath}/TESTCASE/
-                       
                     """
                     
                     echo "Files moved to buffer: ${bufferSubPath}"
@@ -100,6 +99,9 @@ pipeline {
                                 if ! git rev-parse --verify main >/dev/null 2>&1; then
                                     echo "Main branch does not exist. Creating it..."
                                     git checkout -b main
+                                    # Configure Git user
+                                    git config user.email "you@example.com"
+                                    git config user.name "Your Name"
                                     # Make an initial commit
                                     git commit --allow-empty -m "Initial commit"
                                     git push --set-upstream origin main
