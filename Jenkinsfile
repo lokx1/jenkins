@@ -43,7 +43,7 @@ pipeline {
                 script {
                     echo 'Generating test cases using AI...'
                     def output = sh(script: """
-                        python3 /home/agent1/Workspace/workspace/Jenkins/AiGen.py \
+                        python3 /home/agent1/Workspace/workspace/Jenkins/stageCompile.py \
                         /home/agent1/Workspace/workspace/Jenkins/INPUT_CHECKED \
                         /home/agent1/Workspace/workspace/Jenkins/TESTCASE
                     """, returnStdout: true).trim()
