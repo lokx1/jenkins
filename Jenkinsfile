@@ -76,8 +76,8 @@ pipeline {
                         mv /home/agent1/Workspace/workspace/Jenkins/OBJECTFILE/* ${bufferSubPath}/
                         mv /home/agent1/Workspace/workspace/Jenkins/INPUT/InputLogs.txt ${bufferSubPath}/
                         mkdir -p ${bufferSubPath}/TESTCASE
-                        mv /home/agent1/Workspace/workspace/Jenkins/TESTCASE/*.c ${bufferSubPath}/TESTCASE/
                     """
+                       // mv /home/agent1/Workspace/workspace/Jenkins/TESTCASE/*.c ${bufferSubPath}/TESTCASE/
                     
                     echo "Files moved to buffer: ${bufferSubPath}"
                     echo "INPUT_CHECKED, OBJECTFILE directories are now empty."
